@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Services;
+
+use App\Exceptions\Network\NotFoundException;
+use App\Repositories\Interfaces\NetworkRepositoryInterface;
+use Exception;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
+
+class NetworkService
+{
+    public function __construct(protected NetworkRepositoryInterface $networkRepository) {}
+
+    public function list(int $page = 1, string $orderBy = 'asc', int $perPage = 15): LengthAwarePaginator
+    {
+        return $this->networkRepository->listPaginate($page, $orderBy, $perPage);
+    }
+
+    public function show(int $networkId): ?Model
+    {
+        $network = $this->networkRepository->findNetwork($networkId);
+
+        if (! $network->id) {
+            throw new Exception;
+        }
+
+        return $network;
+    }
+
+    public function store(array $data): Model
+    {
+        $network = $this->networkRepository->create($data);
+
+        if (! $network->id) {
+            throw new Exception;
+        }
+
+        return $network;
+    }
+
+    public function update(int $networkId, array $data): bool
+    {
+        $update = $this->networkRepository->update($data, $networkId);
+
+        if (! $update) {
+            throw new Exception;
+        }
+
+        return true;
+    }
+
+    public function delete($networkId): bool
+    {
+        $network = $this->networkRepository->findNetwork($networkId);
+
+        if (empty($network)) {
+            throw new NotFoundException();
+        }
+
+        $delete = $this->networkRepository->delete($networkId);
+
+        if (! $delete) {
+            throw new Exception;
+        }
+
+        return true;
+    }
+}

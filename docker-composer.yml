@@ -1,0 +1,29 @@
+services:
+  laravel_app:
+    build: .
+    working_dir: /var/www
+    ports:
+      - '8000:8000'
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db_postgres
+      - DB_PORT=5432
+      - DB_DATABASE=laravel
+      - DB_USERNAME=sail
+      - DB_PASSWORD=password
+    volumes:
+      - '.:/var/www'
+    depends_on:
+      - db_postgres
+  db_postgres:
+    image: 'postgres:17-alpine'
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=laravel
+      - POSTGRES_USER=sail
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - 'pgdata:/var/lib/postgresql/data'
+volumes:
+  pgdata: null
