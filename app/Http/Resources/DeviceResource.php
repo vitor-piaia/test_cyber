@@ -19,12 +19,14 @@ class DeviceResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
             'mac' => $this->mac,
             'device_type' => $this->device_type,
             'os' => $this->os,
             'status' => $this->status,
+            'accesses' => $this->when($request->routeIs(['device.show', 'device.store']), DeviceNetworkAccessResource::collection($this->accesses)),
         ];
     }
 }

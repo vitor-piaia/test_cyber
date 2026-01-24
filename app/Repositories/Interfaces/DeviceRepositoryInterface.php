@@ -13,4 +13,6 @@ interface DeviceRepositoryInterface
     public function update(array $data, int $deviceId);
 
     public function delete(int $deviceId);
+
+    public function checkExists(int $deviceId);
 }

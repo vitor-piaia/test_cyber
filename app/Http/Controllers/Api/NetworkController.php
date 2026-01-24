@@ -95,7 +95,7 @@ class NetworkController extends Controller
             Log::error($e);
 
             return response()->json([
-                'message' => __('message.error.not-found'),
+                'message' => __('message.error.not_found'),
             ], Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error($e);

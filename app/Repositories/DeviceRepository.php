@@ -7,16 +7,6 @@ use App\Repositories\Interfaces\DeviceRepositoryInterface;
 
 class DeviceRepository extends BaseRepository implements DeviceRepositoryInterface
 {
-//    public function getFieldsSearchable()
-//    {
-//        return [
-//            'destiny',
-//            'departure_date',
-//            'return_date',
-//            'status',
-//        ];
-//    }
-
     public function model()
     {
         return Device::class;
@@ -31,5 +21,10 @@ class DeviceRepository extends BaseRepository implements DeviceRepositoryInterfa
     public function findDevice(int $deviceId): ?Device
     {
         return $this->model->where('id', $deviceId)->first();
+    }
+
+    public function checkExists(int $deviceId): bool
+    {
+        return $this->model->where('id', $deviceId)->exists();
     }
 }

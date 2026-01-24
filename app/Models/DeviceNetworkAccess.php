@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class DeviceNetworkAccess extends Model
 {
@@ -44,5 +45,10 @@ class DeviceNetworkAccess extends Model
     public function network(): BelongsTo
     {
         return $this->belongsTo(Network::class, 'network_id', 'id');
+    }
+
+    public function metadata(): HasOne
+    {
+        return $this->HasOne(DeviceNetworkMetadata::class, 'device_network_access_id', 'id');
     }
 }

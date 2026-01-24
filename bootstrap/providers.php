@@ -6,4 +6,5 @@ return [
     App\Providers\DeviceRepositoryServiceProvider::class,
     App\Providers\DeviceNetworkAccessRepositoryServiceProvider::class,
     App\Providers\ShodanServiceProvider::class,
+    App\Providers\DeviceNetworkMetadataRepositoryServiceProvider::class,
 ];

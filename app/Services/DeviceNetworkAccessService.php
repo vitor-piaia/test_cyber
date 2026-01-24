@@ -22,4 +22,9 @@ class DeviceNetworkAccessService
 
         return $access;
     }
+
+    public function checkNonExistsIp(string $ip, int $deviceId): bool
+    {
+        return $this->deviceNetworkAccessRepository->checkNonExistsIp($ip, $deviceId);
+    }
 }

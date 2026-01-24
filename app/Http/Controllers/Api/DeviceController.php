@@ -40,12 +40,13 @@ class DeviceController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
     public function show(int $deviceId): DeviceResource|JsonResponse
     {
         try {
-            $network = $this->deviceService->show($deviceId);
+            $device = $this->deviceService->show($deviceId);
 
-            return new DeviceResource($network, Response::HTTP_CREATED);
+            return new DeviceResource($device, Response::HTTP_CREATED);
         } catch (Exception $e) {
             Log::error($e);
 
@@ -58,9 +59,9 @@ class DeviceController extends Controller
     public function store(StoreRequest $request): DeviceResource|JsonResponse
     {
         try {
-            $network = $this->registerDeviceWithAccess->execute($request->validated());
+            $device = $this->registerDeviceWithAccess->execute($request->validated());
 
-            return new DeviceResource($network, Response::HTTP_CREATED);
+            return new DeviceResource($device, Response::HTTP_CREATED);
         } catch (Exception $e) {
             Log::error($e);
 
@@ -99,7 +100,7 @@ class DeviceController extends Controller
             Log::error($e);
 
             return response()->json([
-                'message' => __('message.error.not-found'),
+                'message' => __('message.error.not_found'),
             ], Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error($e);

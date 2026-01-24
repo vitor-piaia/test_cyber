@@ -36,7 +36,8 @@ class RegisterDeviceWithAccess
             $this->deviceNetworkAccessService->store([
                 'device_id' => $device->id,
                 'ip' => $ip,
-                'network_id' => $network?->id
+                'network_id' => $network?->id,
+                'accessed_at' => now()
             ]);
         }
 

@@ -12,4 +12,12 @@ class DeviceNetworkAccessRepository extends BaseRepository implements DeviceNetw
     {
         return DeviceNetworkAccess::class;
     }
+
+    public function checkNonExistsIp(string $ip, int $deviceId): bool
+    {
+        return $this->model->where([
+            'ip' => $ip,
+            'device_id' => $deviceId
+        ])->exists();
+    }
 }

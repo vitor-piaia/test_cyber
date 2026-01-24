@@ -24,8 +24,6 @@ class DeviceService
         if (! $device->id) {
             throw new Exception;
         }
-        $ok = $this->deviceNetworkAccessService->store(['device_id' => $device->id, 'ip' => '8.8.8.8']);
-        echo'<pre>';print_r($ok);exit('teste');
 
         return $device;
     }
@@ -54,9 +52,9 @@ class DeviceService
 
     public function delete($deviceId): bool
     {
-        $network = $this->deviceRepository->findDevice($deviceId);
+        $device = $this->deviceRepository->findDevice($deviceId);
 
-        if (empty($network)) {
+        if (empty($device)) {
             throw new NotFoundException();
         }
 
@@ -67,5 +65,10 @@ class DeviceService
         }
 
         return true;
+    }
+
+    public function checkExists(int $deviceId): bool
+    {
+        return $this->deviceRepository->checkExists($deviceId);
     }
 }

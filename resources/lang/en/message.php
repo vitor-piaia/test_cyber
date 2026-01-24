@@ -3,7 +3,8 @@
 return [
     'error' => [
         'default' => 'An error has occurred, please try again later.',
-        'not-found' => 'No records found.',
+        'not_found' => 'No records found.',
+        'ip_already_exists' => 'IP already exists.',
         'device' => [
             'validation' => [
                 'mac' => [
@@ -16,6 +17,9 @@ return [
         'device' => [
             'updated' => 'Device updated successfully.',
             'deleted' => 'Device deleted successfully.',
+            'ip' => [
+                'created' => 'Device IP added successfully.',
+            ]
         ],
         'network' => [
             'updated' => 'Network updated successfully.',

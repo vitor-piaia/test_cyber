@@ -10,13 +10,14 @@ class DeviceNetworkMetadata extends Model
 {
     use HasFactory;
 
-    protected $table = 'device_network_access';
+    protected $table = 'device_network_metadata';
 
     protected $primaryKey = 'id';
 
     protected $fillable = [
         'id',
         'device_network_access_id',
+        'isp',
         'domains',
         'hostnames',
         'geolocation',

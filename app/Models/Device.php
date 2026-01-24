@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Device extends Model
 {
@@ -33,4 +34,9 @@ class Device extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function accesses(): HasMany
+    {
+        return $this->hasMany(DeviceNetworkAccess::class, 'device_id', 'id');
+    }
 }
