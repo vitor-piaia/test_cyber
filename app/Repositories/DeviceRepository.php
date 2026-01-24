@@ -28,8 +28,8 @@ class DeviceRepository extends BaseRepository implements DeviceRepositoryInterfa
             ->paginate($perPage, ['*'], 'page', $page);
     }
 
-    public function findDevice(int $networkId): ?Network
+    public function findDevice(int $deviceId): ?Device
     {
-        return $this->model->where('id', $networkId)->first();
+        return $this->model->where('id', $deviceId)->first();
     }
 }

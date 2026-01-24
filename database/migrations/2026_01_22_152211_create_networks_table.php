@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('networks', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('description');
-            $table->string('network_range_start');
-            $table->string('network_range_end');
+            $table->string('cidr')->unique();
             $table->string('location');
             $table->string('status');
             $table->timestamps();

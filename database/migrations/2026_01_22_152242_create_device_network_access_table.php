@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('ip');
             $table->unsignedBigInteger('device_id');
             $table->unsignedBigInteger('network_id');
-            $table->timestamp('accessed_at');
-            $table->timestamp('disconnected_at');
+            $table->timestamp('accessed_at')->nullable();
+            $table->timestamp('disconnected_at')->nullable();
             $table->timestamps();
 
             $table->foreign('device_id')->references('id')->on('devices');

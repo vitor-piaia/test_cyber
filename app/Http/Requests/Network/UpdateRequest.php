@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Network;
 
 use App\Http\Requests\ApiRequest;
+use App\Rules\ValidCidr;
 use Illuminate\Validation\Rule;
 
 class UpdateRequest extends ApiRequest
@@ -17,15 +18,14 @@ class UpdateRequest extends ApiRequest
         $id = $this->route('networkId');
 
         return [
-            'name' => [
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'cidr' => [
                 'required',
                 'string',
-                'max:255',
-                Rule::unique('networks', 'name')->ignore($id)
+                new ValidCidr,
+                Rule::unique('networks', 'cidr')->ignore($id)
             ],
-            'description' => 'required|string|max:255',
-            'network_range_start' => 'required|string|ip',
-            'network_range_end' => 'required|string|ip',
             'location' => 'required|string|max:255',
             'status' => 'required|string|in:active,inactive',
         ];

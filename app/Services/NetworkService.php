@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\Network\NotFoundException;
+use App\Models\Network;
 use App\Repositories\Interfaces\NetworkRepositoryInterface;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +31,7 @@ class NetworkService
 
     public function store(array $data): Model
     {
+        $data['cidr'] = $this->normalizeCidr($data['cidr']);
         $network = $this->networkRepository->create($data);
 
         if (! $network->id) {
@@ -41,6 +43,7 @@ class NetworkService
 
     public function update(int $networkId, array $data): bool
     {
+        $data['cidr'] = $this->normalizeCidr($data['cidr']);
         $update = $this->networkRepository->update($data, $networkId);
 
         if (! $update) {
@@ -65,5 +68,22 @@ class NetworkService
         }
 
         return true;
+    }
+
+    public function findNetworkByIp(string $ip): ?Network
+    {
+        return $this->networkRepository->findNetworkByIp($ip);
+    }
+
+    private function normalizeCidr(string $cidr): string
+    {
+        [$ip, $prefix] = explode('/', $cidr);
+
+        $ipLong = ip2long($ip);
+        $mask = -1 << (32 - $prefix);
+
+        $network = long2ip($ipLong & $mask);
+
+        return "{$network}/{$prefix}";
     }
 }

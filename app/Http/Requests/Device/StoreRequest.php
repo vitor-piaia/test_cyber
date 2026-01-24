@@ -29,6 +29,7 @@ class StoreRequest extends ApiRequest
             'device_type' => 'required|string|max:50',
             'os' => 'required|string|max:50',
             'status' => 'required|string|in:active,inactive',
+            'ip' => 'required|ip'
         ];
     }
 

@@ -22,8 +22,7 @@ class NetworkResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'network_range_start' => $this->network_range_start,
-            'network_range_end' => $this->network_range_end,
+            'cidr' => $this->cidr,
             'location' => $this->location,
             'status' => $this->status,
         ];

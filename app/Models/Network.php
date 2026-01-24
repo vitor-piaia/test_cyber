@@ -17,8 +17,7 @@ class Network extends Model
         'id',
         'name',
         'description',
-        'network_range_start',
-        'network_range_end',
+        'cidr',
         'location',
         'status',
     ];

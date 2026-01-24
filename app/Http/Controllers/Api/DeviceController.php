@@ -8,6 +8,7 @@ use App\Http\Requests\Device\StoreRequest;
 use App\Http\Requests\Device\UpdateRequest;
 use App\Http\Resources\DeviceResource;
 use App\Services\DeviceService;
+use App\Services\Orchestrator\RegisterDeviceWithAccess;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,7 +18,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DeviceController extends Controller
 {
-    public function __construct(private readonly DeviceService $deviceService) {}
+    public function __construct(
+        private readonly DeviceService $deviceService,
+        private readonly RegisterDeviceWithAccess $registerDeviceWithAccess,
+    ) {}
 
     public function list(Request $request): AnonymousResourceCollection|JsonResponse
     {
@@ -54,7 +58,7 @@ class DeviceController extends Controller
     public function store(StoreRequest $request): DeviceResource|JsonResponse
     {
         try {
-            $network = $this->deviceService->store($request->validated());
+            $network = $this->registerDeviceWithAccess->execute($request->validated());
 
             return new DeviceResource($network, Response::HTTP_CREATED);
         } catch (Exception $e) {

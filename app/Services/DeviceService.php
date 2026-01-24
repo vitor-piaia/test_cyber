@@ -10,7 +10,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class DeviceService
 {
-    public function __construct(protected DeviceRepositoryInterface $deviceRepository) {}
+    public function __construct(protected DeviceRepositoryInterface $deviceRepository, protected DeviceNetworkAccessService $deviceNetworkAccessService) {}
 
     public function list(int $page = 1, string $orderBy = 'asc', int $perPage = 15): LengthAwarePaginator
     {
@@ -24,6 +24,8 @@ class DeviceService
         if (! $device->id) {
             throw new Exception;
         }
+        $ok = $this->deviceNetworkAccessService->store(['device_id' => $device->id, 'ip' => '8.8.8.8']);
+        echo'<pre>';print_r($ok);exit('teste');
 
         return $device;
     }

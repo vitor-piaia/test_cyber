@@ -9,4 +9,5 @@ interface NetworkRepositoryInterface
     public function create(array $data);
     public function update(array $data, int $networkId);
     public function delete(int $networkId);
+    public function findNetworkByIp(string $ip);
 }
