@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Interfaces\DeviceNetworkMetadataRepositoryInterface;
+use Illuminate\Support\Facades\Cache;
 
 class DeviceNetworkMetadataService
 {
@@ -22,6 +23,12 @@ class DeviceNetworkMetadataService
             'last_shodan_scan_at' => now(),
         ];
 
-        $this->deviceNetworkMetadataRepository->create($data);
+        $metadata = $this->deviceNetworkMetadataRepository->updateOrCreate(
+            ['device_network_access_id' => $deviceNetworkAccessId],
+            $data
+        );
+
+        $deviceId = $metadata->deviceNetworkAccess?->device_id;
+        Cache::forget("device:{$deviceId}");
     }
 }

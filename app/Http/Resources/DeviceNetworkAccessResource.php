@@ -19,6 +19,7 @@ class DeviceNetworkAccessResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'ip' => $this->ip,
             'network_name' => $this->network?->name,
             'accessed_at' => $this->accessed_at,

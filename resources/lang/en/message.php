@@ -25,5 +25,8 @@ return [
             'updated' => 'Network updated successfully.',
             'deleted' => 'Network deleted successfully.',
         ],
+        'device_network_access' => [
+            'refresh_metadata' => 'Your update is being processed.'
+        ],
     ],
 ];

@@ -8,6 +8,7 @@ use App\Repositories\Interfaces\NetworkRepositoryInterface;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 
 class NetworkService
 {
@@ -20,7 +21,9 @@ class NetworkService
 
     public function show(int $networkId): ?Model
     {
-        $network = $this->networkRepository->findNetwork($networkId);
+        $network = Cache::remember("network:$networkId", 600, function () use ($networkId) {
+            return $this->networkRepository->findNetwork($networkId);
+        });
 
         if (! $network->id) {
             throw new Exception;
@@ -49,6 +52,8 @@ class NetworkService
         if (! $update) {
             throw new Exception;
         }
+
+        Cache::forget("network:{$networkId}");
 
         return true;
     }

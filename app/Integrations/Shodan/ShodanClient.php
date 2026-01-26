@@ -4,6 +4,7 @@ namespace App\Integrations\Shodan;
 
 use Illuminate\Support\Facades\Http;
 use App\Integrations\Shodan\Interfaces\ShodanClientInterface;
+use Illuminate\Support\Facades\Log;
 
 class ShodanClient implements ShodanClientInterface
 {
@@ -21,6 +22,7 @@ class ShodanClient implements ShodanClientInterface
             ]));
 
         if ($response->failed()) {
+            Log::error($response->json());
             throw new \RuntimeException('Shodan API error');
         }
 

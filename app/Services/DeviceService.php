@@ -7,6 +7,7 @@ use App\Repositories\Interfaces\DeviceRepositoryInterface;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 
 class DeviceService
 {
@@ -19,7 +20,9 @@ class DeviceService
 
     public function show(int $deviceId): ?Model
     {
-        $device = $this->deviceRepository->findDevice($deviceId);
+        $device = Cache::remember("device:$deviceId", 600, function () use ($deviceId) {
+            return $this->deviceRepository->findDevice($deviceId);
+        });
 
         if (! $device->id) {
             throw new Exception;
@@ -46,6 +49,8 @@ class DeviceService
         if (! $update) {
             throw new Exception;
         }
+
+        Cache::forget("device:{$deviceId}");
 
         return true;
     }

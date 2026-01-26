@@ -20,7 +20,9 @@ class DeviceRepository extends BaseRepository implements DeviceRepositoryInterfa
 
     public function findDevice(int $deviceId): ?Device
     {
-        return $this->model->where('id', $deviceId)->first();
+        return $this->model->with(['accesses.metadata'])
+            ->where('id', $deviceId)
+            ->first();
     }
 
     public function checkExists(int $deviceId): bool

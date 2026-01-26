@@ -222,4 +222,17 @@ abstract class BaseRepository
 
         return $model->delete();
     }
+
+    /**
+     * @param  array $attributes
+     * @param  array $values
+     * @return Model
+     */
+    public function updateOrCreate(array $attributes, array $values)
+    {
+        return $this->model->updateOrCreate(
+            $attributes,
+            $values
+        );
+    }
 }
