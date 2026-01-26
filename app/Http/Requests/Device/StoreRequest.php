@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Device;
 
 use App\Http\Requests\ApiRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends ApiRequest
 {
@@ -25,7 +26,16 @@ class StoreRequest extends ApiRequest
         return [
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
-            'mac' => 'required|string|unique:devices,mac|regex:/^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$/',
+            'mac' => [
+                'required',
+                'string',
+                Rule::unique('devices')
+                    ->where(fn ($q) =>
+                    $q->where('mac', $this->value)
+                        ->whereNull('deleted_at')
+                    ),
+                'regex:/^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$/'
+            ],
             'device_type' => 'required|string|max:50',
             'os' => 'required|string|max:50',
             'status' => 'required|string|in:active,inactive',

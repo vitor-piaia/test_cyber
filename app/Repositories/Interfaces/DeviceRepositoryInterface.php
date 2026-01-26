@@ -15,4 +15,6 @@ interface DeviceRepositoryInterface
     public function delete(int $deviceId);
 
     public function checkExists(int $deviceId);
+
+    public function checkDeviceWasDeleted(string $mac);
 }

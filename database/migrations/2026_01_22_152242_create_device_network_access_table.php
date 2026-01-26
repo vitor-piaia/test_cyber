@@ -20,8 +20,8 @@ return new class extends Migration
             $table->timestamp('disconnected_at')->nullable();
             $table->timestamps();
 
-            $table->foreign('device_id')->references('id')->on('devices');
-            $table->foreign('network_id')->references('id')->on('networks');
+            $table->foreign('device_id')->references('id')->on('devices')->onDelete('cascade');;
+            $table->foreign('network_id')->references('id')->on('networks')->onDelete('cascade');;
         });
     }
 

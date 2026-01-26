@@ -15,6 +15,9 @@ services:
       - '.:/var/www'
     depends_on:
       - db_postgres
+      - redis
+    networks:
+      - laravel
   db_postgres:
     image: 'postgres:17-alpine'
     ports:
@@ -25,5 +28,24 @@ services:
       - POSTGRES_PASSWORD=password
     volumes:
       - 'pgdata:/var/lib/postgresql/data'
+    networks:
+      - laravel
+  redis:
+    image: 'redis:7-alpine'
+    ports:
+      - '6379:6379'
+    environment:
+      - CACHE_STORE=redis
+      - QUEUE_CONNECTION=redis
+      - SESSION_DRIVER=redis
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    volumes:
+      - 'redis-data:/data'
+    networks:
+      - laravel
+networks:
+  laravel: null
 volumes:
   pgdata: null
+  redis-data: null

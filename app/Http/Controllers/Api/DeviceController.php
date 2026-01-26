@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Exceptions\Device\NotFoundException;
+use App\Exceptions\Network\NotFoundException as NetworkNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Device\StoreRequest;
 use App\Http\Requests\Device\UpdateRequest;
@@ -62,6 +63,12 @@ class DeviceController extends Controller
             $device = $this->registerDeviceWithAccess->execute($request->validated());
 
             return new DeviceResource($device, Response::HTTP_CREATED);
+        } catch (NetworkNotFoundException $e) {
+            Log::error($e);
+
+            return response()->json([
+                'message' => __('message.error.not_found'),
+            ], Response::HTTP_NOT_FOUND);
         } catch (Exception $e) {
             Log::error($e);
 

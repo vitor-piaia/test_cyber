@@ -29,4 +29,9 @@ class DeviceRepository extends BaseRepository implements DeviceRepositoryInterfa
     {
         return $this->model->where('id', $deviceId)->exists();
     }
+
+    public function checkDeviceWasDeleted(string $mac): ?Device
+    {
+        return $this->model->where('mac', $mac)->onlyTrashed()->first();
+    }
 }

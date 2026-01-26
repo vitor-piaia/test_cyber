@@ -3,11 +3,13 @@
 namespace App\Services;
 
 use App\Exceptions\Device\NotFoundException;
+use App\Models\Device;
 use App\Repositories\Interfaces\DeviceRepositoryInterface;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class DeviceService
 {
@@ -63,11 +65,13 @@ class DeviceService
             throw new NotFoundException();
         }
 
-        $delete = $this->deviceRepository->delete($deviceId);
+        DB::transaction(function () use ($device) {
+            $device->delete();
 
-        if (! $delete) {
-            throw new Exception;
-        }
+            $device->accesses()->delete();
+        });
+
+        Cache::forget("device:{$deviceId}");
 
         return true;
     }
@@ -75,5 +79,17 @@ class DeviceService
     public function checkExists(int $deviceId): bool
     {
         return $this->deviceRepository->checkExists($deviceId);
+    }
+
+    public function checkDeviceWasDeletedAndRestore(string $mac): ?Device
+    {
+        $device = $this->deviceRepository->checkDeviceWasDeleted($mac);
+
+        if (empty($device)) {
+            return $device;
+        }
+
+        $device->accesses()->restore();
+        return $device;
     }
 }
