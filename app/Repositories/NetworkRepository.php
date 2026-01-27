@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Network;
 use App\Repositories\Interfaces\NetworkRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class NetworkRepository extends BaseRepository implements NetworkRepositoryInterface
 {
@@ -26,5 +27,15 @@ class NetworkRepository extends BaseRepository implements NetworkRepositoryInter
     public function findNetworkByIp(string $ip): ?Network
     {
         return $this->model->whereRaw('? <<= cidr', [$ip])->first();
+    }
+
+    public function deleteWithRelations(Network $network): bool
+    {
+        DB::transaction(function () use ($network) {
+            $network->delete();
+            $network->accesses()->delete();
+        });
+
+        return true;
     }
 }

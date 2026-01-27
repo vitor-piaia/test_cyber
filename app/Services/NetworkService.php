@@ -9,7 +9,6 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 class NetworkService
 {
@@ -67,11 +66,7 @@ class NetworkService
             throw new NotFoundException();
         }
 
-        DB::transaction(function () use ($network) {
-            $network->delete();
-
-            $network->accesses()->delete();
-        });
+        $this->networkRepository->deleteWithRelations($network);
 
         Cache::forget("network:{$networkId}");
 

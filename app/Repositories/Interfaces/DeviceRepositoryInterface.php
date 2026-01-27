@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Interfaces;
 
+use App\Models\Device;
+
 interface DeviceRepositoryInterface
 {
     public function listPaginate(int $page, string $orderBy, int $perPage);
@@ -17,4 +19,7 @@ interface DeviceRepositoryInterface
     public function checkExists(int $deviceId);
 
     public function checkDeviceWasDeleted(string $mac);
+
+    public function deleteWithRelations(Device $device);
+    public function restoreWithRelations(Device $device);
 }

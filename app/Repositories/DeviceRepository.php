@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Device;
 use App\Repositories\Interfaces\DeviceRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class DeviceRepository extends BaseRepository implements DeviceRepositoryInterface
 {
@@ -33,5 +34,25 @@ class DeviceRepository extends BaseRepository implements DeviceRepositoryInterfa
     public function checkDeviceWasDeleted(string $mac): ?Device
     {
         return $this->model->where('mac', $mac)->onlyTrashed()->first();
+    }
+
+    public function deleteWithRelations(Device $device): bool
+    {
+        DB::transaction(function () use ($device) {
+            $device->delete();
+            $device->accesses()->delete();
+        });
+
+        return true;
+    }
+
+    public function restoreWithRelations(Device $device): bool
+    {
+        DB::transaction(function () use ($device) {
+            $device->restore();
+            $device->accesses()->restore();
+        });
+
+        return true;
     }
 }

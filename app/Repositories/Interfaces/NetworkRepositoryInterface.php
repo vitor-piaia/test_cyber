@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Interfaces;
 
+use App\Models\Network;
+
 interface NetworkRepositoryInterface
 {
     public function listPaginate(int $page, string $orderBy, int $perPage);
@@ -10,4 +12,5 @@ interface NetworkRepositoryInterface
     public function update(array $data, int $networkId);
     public function delete(int $networkId);
     public function findNetworkByIp(string $ip);
+    public function deleteWithRelations(Network $network);
 }

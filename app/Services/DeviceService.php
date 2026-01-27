@@ -3,17 +3,15 @@
 namespace App\Services;
 
 use App\Exceptions\Device\NotFoundException;
-use App\Models\Device;
 use App\Repositories\Interfaces\DeviceRepositoryInterface;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 class DeviceService
 {
-    public function __construct(protected DeviceRepositoryInterface $deviceRepository, protected DeviceNetworkAccessService $deviceNetworkAccessService) {}
+    public function __construct(protected DeviceRepositoryInterface $deviceRepository) {}
 
     public function list(int $page = 1, string $orderBy = 'asc', int $perPage = 15): LengthAwarePaginator
     {
@@ -65,11 +63,7 @@ class DeviceService
             throw new NotFoundException();
         }
 
-        DB::transaction(function () use ($device) {
-            $device->delete();
-
-            $device->accesses()->delete();
-        });
+        $this->deviceRepository->deleteWithRelations($device);
 
         Cache::forget("device:{$deviceId}");
 
@@ -81,15 +75,18 @@ class DeviceService
         return $this->deviceRepository->checkExists($deviceId);
     }
 
-    public function checkDeviceWasDeletedAndRestore(string $mac): ?Device
+    public function checkDeviceWasDeletedAndRestore(string $mac): ?bool
     {
         $device = $this->deviceRepository->checkDeviceWasDeleted($mac);
 
         if (empty($device)) {
-            return $device;
+            return false;
         }
 
-        $device->accesses()->restore();
-        return $device;
+        $this->deviceRepository->restoreWithRelations($device);
+
+        Cache::forget("device:{$device->id}");
+
+        return true;
     }
 }

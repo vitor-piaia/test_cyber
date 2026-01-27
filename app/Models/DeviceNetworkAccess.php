@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+//use Illuminate\Database\Eloquent\Relations\BelongsTo;
+//use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DeviceNetworkAccess extends Model
@@ -38,18 +38,18 @@ class DeviceNetworkAccess extends Model
         'updated_at',
     ];
 
-    public function device(): BelongsTo
-    {
-        return $this->belongsTo(Device::class, 'device_id', 'id');
-    }
-
-    public function network(): BelongsTo
-    {
-        return $this->belongsTo(Network::class, 'network_id', 'id');
-    }
-
-    public function metadata(): HasOne
-    {
-        return $this->HasOne(DeviceNetworkMetadata::class, 'device_network_access_id', 'id');
-    }
+//    public function device(): BelongsTo
+//    {
+//        return $this->belongsTo(Device::class, 'device_id', 'id');
+//    }
+//
+//    public function network(): BelongsTo
+//    {
+//        return $this->belongsTo(Network::class, 'network_id', 'id');
+//    }
+//
+//    public function metadata(): HasOne
+//    {
+//        return $this->HasOne(DeviceNetworkMetadata::class, 'device_network_access_id', 'id');
+//    }
 }

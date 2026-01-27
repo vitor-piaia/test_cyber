@@ -32,7 +32,7 @@ class RegisterDeviceWithAccess
 
         $device = $this->deviceService->checkDeviceWasDeletedAndRestore($dataDevice['mac']);
 
-        if (empty($device)) {
+        if (! $device) {
             $device = $this->deviceService->store($dataDevice);
         }
 
