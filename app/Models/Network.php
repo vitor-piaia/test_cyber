@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Network extends Model
@@ -22,4 +23,9 @@ class Network extends Model
         'location',
         'status',
     ];
+
+    public function accesses(): HasMany
+    {
+        return $this->hasMany(DeviceNetworkAccess::class, 'network_id', 'id');
+    }
 }

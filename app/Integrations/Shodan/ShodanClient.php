@@ -2,24 +2,32 @@
 
 namespace App\Integrations\Shodan;
 
-use Illuminate\Support\Facades\Http;
 use App\Integrations\Shodan\Interfaces\ShodanClientInterface;
+use Illuminate\Http\Client\Factory;
 use Illuminate\Support\Facades\Log;
 
 class ShodanClient implements ShodanClientInterface
 {
+    public function __construct(
+        private Factory $http,
+        private string $baseUrl,
+        private string $apiKey,
+        private int $timeout
+    ) {}
+
     protected function baseRequest()
     {
-        return Http::baseUrl(config('shodan.base_url'))
-            ->timeout(config('shodan.timeout'));
+        return $this->http
+            ->baseUrl($this->baseUrl)
+            ->timeout($this->timeout);
     }
 
     public function get(string $uri, array $query = []): array
     {
-        $response = $this->baseRequest()
-            ->get($uri, array_merge($query, [
-                'key' => config('shodan.api_key'),
-            ]));
+        $response = $this->baseRequest()->get(
+            $uri,
+            $query + ['key' => $this->apiKey]
+        );
 
         if ($response->failed()) {
             Log::error($response->json());
@@ -31,10 +39,13 @@ class ShodanClient implements ShodanClientInterface
 
     public function post(string $uri, array $body = []): array
     {
-        $response = $this->baseRequest()
-            ->post($uri, $body + ['key' => config('shodan.api_key')]);
+        $response = $this->baseRequest()->post(
+            $uri,
+            $body + ['key' => $this->apiKey]
+        );
 
         if ($response->failed()) {
+            Log::error($response->json());
             throw new \RuntimeException('Shodan API error');
         }
 

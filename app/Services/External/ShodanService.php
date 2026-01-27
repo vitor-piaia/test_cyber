@@ -12,12 +12,4 @@ class ShodanService
     {
         return $this->client->get("/shodan/host/{$ip}");
     }
-
-    public function search(string $query, int $page = 1): array
-    {
-        return $this->client->get('/shodan/host/search', [
-            'query' => $query,
-            'page'  => $page,
-        ]);
-    }
 }

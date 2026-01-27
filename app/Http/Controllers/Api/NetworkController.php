@@ -41,7 +41,7 @@ class NetworkController extends Controller
         try {
             $network = $this->networkService->show($networkId);
 
-            return new NetworkResource($network, Response::HTTP_CREATED);
+            return new NetworkResource($network, Response::HTTP_OK);
         } catch (Exception $e) {
             Log::error($e);
 
