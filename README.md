@@ -64,6 +64,11 @@
    chown -R www-data:www-data storage/
    ```
 
+9. Leave the queue running to obtain metadata from Shodan:
+   ```bash
+   php artisan queue:work --queue=shodan
+   ```
+
 ---
 
 ## 📖 API Documentation
