@@ -2,9 +2,10 @@ services:
   laravel_app:
     build: .
     ports:
-      - "8000:8000"
+      - '8000:8000'
     volumes:
-      - .:/app
+      - '.:/app'
+      - '/app/vendor/'
     environment:
       DB_CONNECTION: pgsql
       DB_HOST: db_postgres
@@ -22,29 +23,24 @@ services:
       - redis
     networks:
       - laravel
-
   db_postgres:
-    image: postgres:17-alpine
+    image: 'postgres:17-alpine'
     environment:
       POSTGRES_DB: laravel
       POSTGRES_USER: sail
       POSTGRES_PASSWORD: password
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - 'pgdata:/var/lib/postgresql/data'
     networks:
       - laravel
-
   redis:
-    image: redis:7-alpine
+    image: 'redis:7-alpine'
     volumes:
-      - redis-data:/data
+      - 'redis-data:/data'
     networks:
       - laravel
-
 networks:
-  laravel:
-
+  laravel: null
 volumes:
-  pgdata:
-  redis-data:
-
+  pgdata: null
+  redis-data: null
