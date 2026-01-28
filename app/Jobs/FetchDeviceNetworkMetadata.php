@@ -30,7 +30,7 @@ class FetchDeviceNetworkMetadata implements ShouldQueue, ShouldBeUnique
 
     public function handle(ShodanService $shodanService, DeviceNetworkMetadataService $deviceNetworkMetadataService)
     {
-        if (! RateLimiter::attempt('shodan-api', 2, fn () => true)) {
+        if (! RateLimiter::attempt('shodan-api', 15, fn () => true)) {
             $this->release(60);
             return;
         }

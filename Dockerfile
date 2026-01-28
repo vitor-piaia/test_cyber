@@ -1,35 +1,35 @@
-FROM dunglas/frankenphp:1.3-php8.4-alpine
+FROM dunglas/frankenphp:php8.4-bookworm
 
-RUN apk add --no-cache bash
+RUN apt-get update && apt-get install -y \
+    bash \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN install-php-extensions \
     pcntl \
     pdo_pgsql \
     pgsql \
+    redis \
+    gd \
+    opcache \
     intl \
     zip \
-    opcache \
-    bcmath \
-    redis
+    bcmath
 
-WORKDIR /var/www
+WORKDIR /app
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-COPY composer.json composer.lock ./
-
-RUN composer install --no-dev --no-scripts --no-autoloader --no-interaction
-
 COPY . .
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist && \
+    composer dump-autoload --optimize
 
-RUN php artisan config:clear && php artisan route:clear
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
-
-ENV AUTORUN_LARAVEL_OCTANE=1
 ENV OCTANE_SERVER=frankenphp
+ENV APP_ENV=production
 
 EXPOSE 8000
 
-CMD ["php", "artisan", "--host=0.0.0.0", "--port=8000"]
+CMD ["php", "artisan", "octane:start", "--server=frankenphp", "--host=0.0.0.0", "--port=8000"]
 

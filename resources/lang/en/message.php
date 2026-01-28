@@ -18,7 +18,7 @@ return [
             'updated' => 'Device updated successfully.',
             'deleted' => 'Device deleted successfully.',
             'ip' => [
-                'created' => 'Device IP added successfully.',
+                'created' => 'IP device added successfully.',
             ]
         ],
         'network' => [
