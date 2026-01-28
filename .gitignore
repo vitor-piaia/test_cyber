@@ -29,7 +29,6 @@
 /storage/framework/views/*
 /storage/logs/*
 /vendor
-/composer.lock
 /composer.phar
 Homestead.json
 Homestead.yaml

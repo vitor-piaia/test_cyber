@@ -6,34 +6,19 @@
 - Docker
 - Docker Compose
 
-### Instalation
+### Installation
 
 1. Open project directory:
    ```bash
    cd test_cyber
    ```
 
-2. Up the project containers:
-   ```bash
-   docker-compose up -d --build
-   ```
-
-3. Copy the file example `.env`:
+2. Copy the file example `.env`:
    ```bash
    cp .env.example .env
    ```
-
-4. Access Laravel container:
-   ```bash
-   docker exec -it laravel bash
-   ```
-
-5. Install the PHP dependencies:
-   ```bash
-   composer install
-   ```
-
-6. Configure the `.env` file:
+   
+3. Configure the `.env` file:
 - Uncomment the database information and add:
   ```env
   DB_CONNECTION=pgsql
@@ -42,7 +27,30 @@
   DB_DATABASE=laravel
   DB_USERNAME=sail
   DB_PASSWORD=password
+  
+  OCTANE_SERVER=frankenphp
+  OCTANE_HTTPS=false
+  
+  SHODAN_BASE_URL=https://api.shodan.io
+  SHODAN_API_KEY=[your_api_key]
+  SHODAN_TIMEOUT=10
   ```
+
+4. Up the project containers:
+   ```bash
+   docker-compose up -d --build
+   ```
+
+5. Access Laravel container:
+   ```bash
+   docker exec -it test_cyber-laravel_app-1 bash
+   ```
+
+6. Install the PHP dependencies:
+   ```bash
+   composer install
+   ```
+
 
 7. Run the optimization and database commands:
    ```bash
