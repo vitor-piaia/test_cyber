@@ -51,20 +51,26 @@
    composer install
    ```
 
+7. Generate the application keys and API documentation:
+   ```bash
+   php artisan key:generate
+   php artisan l5-swagger:generate
+   ```
 
-7. Run the optimization and database commands:
+
+8. Run the optimization and database commands:
    ```bash
    composer dump
    php artisan optimize
    php artisan migrate
    ```
 
-8. Correct the permissions for the `storage/` folder inside the container:
+9. Correct the permissions for the `storage/` folder inside the container:
    ```bash
    chown -R www-data:www-data storage/
    ```
 
-9. Leave the queue running to obtain metadata from Shodan:
+10. Leave the queue running to obtain metadata from Shodan:
    ```bash
    php artisan queue:work --queue=shodan
    ```

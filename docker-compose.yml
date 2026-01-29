@@ -2,45 +2,34 @@ services:
   laravel_app:
     build: .
     ports:
-      - '8000:8000'
-    volumes:
-      - '.:/app'
-      - '/app/vendor/'
-    environment:
-      DB_CONNECTION: pgsql
-      DB_HOST: db_postgres
-      DB_PORT: 5432
-      DB_DATABASE: laravel
-      DB_USERNAME: sail
-      DB_PASSWORD: password
-      CACHE_STORE: redis
-      QUEUE_CONNECTION: redis
-      SESSION_DRIVER: redis
-      REDIS_HOST: redis
-      OCTANE_SERVER: frankenphp
+      - "8000:8000"
     depends_on:
       - db_postgres
       - redis
     networks:
       - laravel
+
   db_postgres:
-    image: 'postgres:17-alpine'
+    image: postgres:17-alpine
     environment:
       POSTGRES_DB: laravel
       POSTGRES_USER: sail
       POSTGRES_PASSWORD: password
     volumes:
-      - 'pgdata:/var/lib/postgresql/data'
+      - pgdata:/var/lib/postgresql/data
     networks:
       - laravel
+
   redis:
-    image: 'redis:7-alpine'
+    image: redis:7-alpine
     volumes:
-      - 'redis-data:/data'
+      - redis-data:/data
     networks:
       - laravel
+
 networks:
-  laravel: null
+  laravel:
+
 volumes:
-  pgdata: null
-  redis-data: null
+  pgdata:
+  redis-data:
